@@ -124,7 +124,8 @@ void loop(void) {
     M5.Lcd.printf("%.3f   \r\n", value/1000);
 
   M5.Lcd.setTextColor(WHITE, BLACK);
-  M5.Lcd.drawString(String(adc_raw * voltmeter.resolution * voltmeter.calibration_factor)+"          ",210,120,2);
+  M5.Lcd.drawString(String(value)+"          ",210,120,2);
+  
   M5.Lcd.setTextColor(WHITE, BLUE);
   M5.Lcd.drawString("ADC:"+String(adc_raw)+" ",210,140,1);
   M5.Lcd.setTextColor(WHITE, BLACK);  
@@ -132,14 +133,18 @@ void loop(void) {
  if(value<0)
     value=value*-1;
  
+//***************************************** MOVE RED SQUARE POINTER ************************************************
+
  x=map(value,0,32000,16,304);
 
  if(x!=xt)
   {
-  M5.Lcd.fillTriangle(xt-5,154,xt+5,154,xt,166,BLACK);
-  M5.Lcd.fillTriangle(x-5,154,x+5,154,x,166,RED);
-   xt=x;
+  M5.Lcd.fillTriangle(xt-5,154,xt+5,154,xt,166,BLACK); // Overwrite old square with background color
+  M5.Lcd.fillTriangle(x-5,154,x+5,154,x,166,RED);      // Draw new red square
+  xt=x;
   }
+
+//*******************************************************************************************************************
 
 if(M5.BtnC.wasPressed())
 {
