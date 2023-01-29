@@ -21,7 +21,7 @@ int x=0;
 int xt=0;
 float value=0;
 
-int bright[4]={30,60,100,200};
+int bright[4]={2,4,8,20};
 int b=1;
 bool d=0;
 
