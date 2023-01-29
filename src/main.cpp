@@ -1,15 +1,10 @@
 #include <Arduino.h>
 
-
-//#include <Wire.h>
-//#include "voltmeter.h"
 #include <M5Core2.h>
 #include "M5_ADS1115.h"
-//#include "M5Stack.h"
 #include "title.h"
 #include "shut.h"
 
-//Voltmeter voltmeter;
 ADS1115 voltmeter;
 
 float page512_volt = 5000.0F;
@@ -21,11 +16,10 @@ int16_t adc_raw = 0;
 
 int16_t hope = 0.0;
 ADS1115Gain_t now_gain = PAG_512;
-//voltmeterGain_t now_gain = PAG_512;
 
 int x=0;
 int xt=0;
-int value=0;
+float value=0;
 
 int bright[4]={30,60,100,200};
 int b=1;
@@ -33,7 +27,6 @@ bool d=0;
 
 void setup() {
   M5.begin();
-  //M5.Power.begin();
   M5.Lcd.setSwapBytes(true);
   M5.Lcd.setBrightness(bright[b]);
   Wire.begin();
@@ -62,21 +55,19 @@ void setup() {
   M5.Lcd.drawString("measure voltage",214,72,1);
   M5.Lcd.drawString("up to 32 Volts",214,84,1);
   M5.Lcd.drawString("BRIGHTNESS: "+String(b),16,4,1);
-  //M5.Lcd.drawString("BATERRY: "+String(M5.Power.getBatteryLevel())+"%",226,4,1);
   
   M5.Lcd.setTextFont(2);
-
   M5.Lcd.setCursor(36, 216);
   M5.Lcd.printf("D00/000");
 
   M5.Lcd.setCursor(220, 216 );
   M5.Lcd.printf("Brightness");
 
- M5.Lcd.drawLine(16,180,304,180,WHITE);
- M5.Lcd.drawLine(16,16,304,16,WHITE);
+  M5.Lcd.drawLine(16,180,304,180,WHITE);
+  M5.Lcd.drawLine(16,16,304,16,WHITE);
 
-   M5.Lcd.setTextColor(WHITE, RED);
-     M5.Lcd.drawString("     mVolts     ",210,100,2);
+  M5.Lcd.setTextColor(WHITE, RED);
+  M5.Lcd.drawString("     mVolts     ",210,100,2);
   M5.Lcd.setTextColor(WHITE, BLACK);
  
 
@@ -92,11 +83,7 @@ void setup() {
         M5.Lcd.setCursor((i*18)+start-4, 186);
         M5.Lcd.print(i*2 );
        }
-    
-    
     }
-
- 
 }
 
 void loop(void) {
@@ -125,37 +112,28 @@ void loop(void) {
   }
 
   M5.Lcd.setTextColor(WHITE, BLACK);
-
-
-  
   M5.Lcd.setCursor(10, 80);
   M5.Lcd.setTextFont(7);
   
-  value=adc_raw * voltmeter.resolution * voltmeter.calibration_factor;
+  value = adc_raw * voltmeter.resolution * voltmeter.calibration_factor;
  
   if(d==0)
-  M5.Lcd.printf("%.2f   \r\n", (
-    
-    adc_raw * voltmeter.resolution * voltmeter.calibration_factor)/1000);
-   if(d==1)
-  M5.Lcd.printf("%.3f  \r\n", (adc_raw * voltmeter.resolution * voltmeter.calibration_factor)/1000);
+    M5.Lcd.printf("%.2f   \r\n", value/1000);
 
- 
+  if(d==1)
+    M5.Lcd.printf("%.3f   \r\n", value/1000);
+
   M5.Lcd.setTextColor(WHITE, BLACK);
-M5.Lcd.drawString(String(adc_raw * voltmeter.resolution * voltmeter.calibration_factor)+"          ",210,120,2);
- M5.Lcd.setTextColor(WHITE, BLUE);
-M5.Lcd.drawString("ADC:"+String(adc_raw)+" ",210,140,1);
- M5.Lcd.setTextColor(WHITE, BLACK);  
-
- 
+  M5.Lcd.drawString(String(adc_raw * voltmeter.resolution * voltmeter.calibration_factor)+"          ",210,120,2);
+  M5.Lcd.setTextColor(WHITE, BLUE);
+  M5.Lcd.drawString("ADC:"+String(adc_raw)+" ",210,140,1);
+  M5.Lcd.setTextColor(WHITE, BLACK);  
 
  if(value<0)
- value=value*-1;
+    value=value*-1;
  
  x=map(value,0,32000,16,304);
 
-
- 
  if(x!=xt)
   {
   M5.Lcd.fillTriangle(xt-5,154,xt+5,154,xt,166,BLACK);
@@ -173,8 +151,6 @@ if(M5.BtnC.wasPressed())
   }
 
 if(M5.BtnA.wasPressed())
-d=!d;
-
-
+    d=!d;
   
 }
