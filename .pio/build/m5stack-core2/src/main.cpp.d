@@ -245,4 +245,5 @@
  .pio/libdeps/m5stack-core2/M5Core2/src/utility/ding.c \
  .pio/libdeps/m5stack-core2/M5Core2/src/AXP192.h \
  .pio/libdeps/m5stack-core2/M5Core2/src/RTC.h \
- .pio/libdeps/m5stack-core2/M5-ADS1115/src/M5_ADS1115.h
+ .pio/libdeps/m5stack-core2/M5-ADS1115/src/M5_ADS1115.h src/title.h \
+ src/shut.h
